@@ -191,7 +191,15 @@ void MainWindow::copy_image()
 
 void MainWindow::resize_image()
 {
-    ui->loadButton->setText("HOLA");
+    colorImage.copyTo(destColorImage);
+    grayImage.copyTo(destGrayImage);
+    if(winSelected)
+    {
+        Mat win = grayImage(imageWindow);
+        cv::resize(win, destGrayImage, cvSize(320, 240));
+        Mat won = colorImage(imageWindow);
+        cv::resize(won, destColorImage, cvSize(320, 240));
+    }
 }
 
 void MainWindow::enlarge_image()
