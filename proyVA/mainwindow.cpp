@@ -146,26 +146,36 @@ void MainWindow::selectWindow(QPointF p, int w, int h)
 
 void MainWindow::load_image()
 {
-     QString img = dialog.getOpenFileName(this,
+    QString img = dialog.getOpenFileName(this,
                            tr("Open Image File"), ".",
                            tr("Image Files (*.jpg *.png *.bmp *.jpeg *.tiff *.tif *.dib *.jp2 *.jpe *.ppm *.pgm *.pbm *.ras *.sr)"));
 
-     String im = img.toStdString();
+    if(!img.isEmpty())
+    {
+        String im = img.toStdString();
 
-    colorImage = imread(im, CV_BGR2RGB);
-    cv::resize(colorImage, colorImage, cvSize(320, 240));
-    cvtColor(colorImage, colorImage, CV_BGR2RGB);
-    cvtColor(colorImage, grayImage, CV_BGR2GRAY);
-    capture = false;
+        colorImage = imread(im, CV_BGR2RGB);
+        cv::resize(colorImage, colorImage, cvSize(320, 240));
+        cvtColor(colorImage, colorImage, CV_BGR2RGB);
+        cvtColor(colorImage, grayImage, CV_BGR2GRAY);
+        capture = false;
+    }
 }
 
 void MainWindow::save_image()
 {
     QString img = dialog.getSaveFileName(this, tr("Save File"), ".", "Image Files (*.jpg)");
-    String im = img.toStdString();
-    copy_image();
-    cvtColor(destColorImage, destColorImage, CV_RGB2BGR);
-    imwrite(im,destColorImage);
+    if(!img.isEmpty())
+    {
+        String im = img.toStdString();
+        copy_image();
+        cvtColor(destColorImage, destColorImage, CV_RGB2BGR);
+        if(showColorImage)
+            imwrite(im,destColorImage);
+        else
+            imwrite(im,destGrayImage);
+    }
+
 }
 
 void MainWindow::copy_image()
@@ -204,7 +214,32 @@ void MainWindow::resize_image()
 
 void MainWindow::enlarge_image()
 {
-    ui->loadButton->setText("HOLA");
+        double fx = 320./imageWindow.width;
+        double fy = 240./imageWindow.height;
+        Mat win = grayImage(imageWindow);
+        Mat won = colorImage(imageWindow);
+        Mat winD;
+        Mat wonD;
+        destGrayImage.setTo(0);
+        destColorImage.setTo(0);
+        if(winSelected)
+        {
+            if(fy<fx){
+                fx=fy;
+            }
+            cv::resize(win, winD, Size(),fx,fx);
+            cv::resize(won, wonD, Size(),fx,fx);
+            Rect rango;
+            rango.width=imageWindow.width*fx;
+            rango.height=imageWindow.height*fx;
+            rango.x = (320-imageWindow.width*fx)/2;
+            rango.y = (240-imageWindow.height*fx)/2;
+            winD.copyTo(destGrayImage(rango));
+            wonD.copyTo(destColorImage(rango));
+
+        }
+
+
 }
 
 void MainWindow::deselectWindow()
