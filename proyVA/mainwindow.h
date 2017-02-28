@@ -37,7 +37,7 @@ private:
     QImage *imgS, *imgD;
     Mat colorImage, grayImage, destColorImage, destGrayImage;
     Mat gray2ColorImage, destGray2ColorImage;
-    bool capture, showColorImage, winSelected, nuevo;
+    bool capture, showColorImage, winSelected, nuevo, warpZoom;
     Rect imageWindow;
     QFileDialog dialog;
 
@@ -45,6 +45,7 @@ private:
 public slots:
     void compute();
     void start_stop_capture(bool start);
+    void warp_zoom(bool warp);
     void change_color_gray(bool color);
     void load_image();
     void save_image();

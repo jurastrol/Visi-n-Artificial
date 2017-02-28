@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>860</width>
-    <height>282</height>
+    <height>344</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -146,6 +146,147 @@
    </property>
    <property name="text">
     <string>Enlarge</string>
+   </property>
+  </widget>
+  <widget class="QPushButton" name="warpButton">
+   <property name="geometry">
+    <rect>
+     <x>740</x>
+     <y>265</y>
+     <width>101</width>
+     <height>31</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>Warp+zoom</string>
+   </property>
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+  </widget>
+  <widget class="QDial" name="angle">
+   <property name="geometry">
+    <rect>
+     <x>40</x>
+     <y>280</y>
+     <width>50</width>
+     <height>64</height>
+    </rect>
+   </property>
+   <property name="maximum">
+    <number>359</number>
+   </property>
+  </widget>
+  <widget class="QScrollBar" name="horizontal">
+   <property name="geometry">
+    <rect>
+     <x>160</x>
+     <y>300</y>
+     <width>160</width>
+     <height>16</height>
+    </rect>
+   </property>
+   <property name="minimum">
+    <number>-500</number>
+   </property>
+   <property name="maximum">
+    <number>500</number>
+   </property>
+   <property name="orientation">
+    <enum>Qt::Horizontal</enum>
+   </property>
+  </widget>
+  <widget class="QScrollBar" name="vertical">
+   <property name="geometry">
+    <rect>
+     <x>360</x>
+     <y>300</y>
+     <width>160</width>
+     <height>16</height>
+    </rect>
+   </property>
+   <property name="minimum">
+    <number>-500</number>
+   </property>
+   <property name="maximum">
+    <number>500</number>
+   </property>
+   <property name="orientation">
+    <enum>Qt::Horizontal</enum>
+   </property>
+  </widget>
+  <widget class="QScrollBar" name="zoom">
+   <property name="geometry">
+    <rect>
+     <x>540</x>
+     <y>300</y>
+     <width>160</width>
+     <height>16</height>
+    </rect>
+   </property>
+   <property name="minimum">
+    <number>0</number>
+   </property>
+   <property name="maximum">
+    <number>99</number>
+   </property>
+   <property name="sliderPosition">
+    <number>0</number>
+   </property>
+   <property name="orientation">
+    <enum>Qt::Horizontal</enum>
+   </property>
+  </widget>
+  <widget class="QLabel" name="label">
+   <property name="geometry">
+    <rect>
+     <x>45</x>
+     <y>270</y>
+     <width>71</width>
+     <height>20</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>Angle</string>
+   </property>
+  </widget>
+  <widget class="QLabel" name="label_2">
+   <property name="geometry">
+    <rect>
+     <x>165</x>
+     <y>270</y>
+     <width>161</width>
+     <height>20</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>Horizontal translation</string>
+   </property>
+  </widget>
+  <widget class="QLabel" name="label_3">
+   <property name="geometry">
+    <rect>
+     <x>375</x>
+     <y>270</y>
+     <width>161</width>
+     <height>20</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>Vertical translation</string>
+   </property>
+  </widget>
+  <widget class="QLabel" name="label_4">
+   <property name="geometry">
+    <rect>
+     <x>590</x>
+     <y>270</y>
+     <width>67</width>
+     <height>17</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>Zoom</string>
    </property>
   </widget>
  </widget>

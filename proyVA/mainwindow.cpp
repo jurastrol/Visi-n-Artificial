@@ -1,6 +1,9 @@
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
 
+//Juan Luis Rastrollo Guerrero
+//Francisco Pajuelo Holguera
+
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
     ui(new Ui::MainWindow)
@@ -36,6 +39,7 @@ MainWindow::MainWindow(QWidget *parent) :
     connect(ui->copyButton,SIGNAL(clicked(bool)),this,SLOT(copy_image()));
     connect(ui->resizeButton,SIGNAL(clicked(bool)),this,SLOT(resize_image()));
     connect(ui->enlargeButton,SIGNAL(clicked(bool)),this,SLOT(enlarge_image()));
+    connect(ui->warpButton, SIGNAL(clicked(bool)),this,SLOT(warp_zoom(bool)));
     connect(visorS,SIGNAL(windowSelected(QPointF, int, int)),this,SLOT(selectWindow(QPointF, int, int)));
     connect(visorS,SIGNAL(pressEvent()),this,SLOT(deselectWindow()));
     timer.start(60);
@@ -63,6 +67,45 @@ void MainWindow::compute()
 
         cvtColor(colorImage, grayImage, CV_BGR2GRAY);
         cvtColor(colorImage, colorImage, CV_BGR2RGB);
+
+    }
+
+    //Código ampliación
+
+    if(warpZoom)
+    {
+        Matx23f matriz;
+        Mat imgD, imgDG;
+        Mat winimgD, winimgDG;
+        int angulo=ui->angle->value();
+        float anguloR= (angulo/180.)*3.14;
+        int zoomE = ui->zoom->value();
+        float zoomR = (zoomE/99.)+1;
+        colorImage.copyTo(destColorImage);
+        grayImage.copyTo(destGrayImage);
+
+        matriz(0,0)=cos(anguloR);
+        matriz(0,1)=sin(anguloR);
+        matriz(1,0)=-sin(anguloR);
+        matriz(1,1)=cos(anguloR);
+        matriz(0,2)= ui->horizontal->value();
+        matriz(1,2)= ui->vertical->value();
+
+
+        cv::warpAffine(colorImage, imgD, matriz, cvSize(320, 240));
+        cv::warpAffine(grayImage, imgDG, matriz, cvSize(320, 240));
+        cv::resize(imgD, winimgD, cvSize(320*zoomR, 240*zoomR));
+        cv::resize(imgDG, winimgDG, cvSize(320*zoomR, 240*zoomR));
+        destColorImage.setTo(0);
+        destGrayImage.setTo(0);
+        Rect rango;
+        rango.width=320;
+        rango.height=240;
+        rango.x = (320*zoomR-320)/2;
+        rango.y = (240*zoomR-240)/2;
+        winimgD(rango).copyTo(destColorImage);
+        winimgDG(rango).copyTo(destGrayImage);
+
 
     }
 
@@ -105,6 +148,21 @@ void MainWindow::start_stop_capture(bool start)
         capture = false;
     }
 }
+
+//Código ampliación
+void MainWindow::warp_zoom(bool warp)
+{
+    if(warp)
+    {
+        warpZoom = true;
+    }
+    else
+    {
+        warpZoom = false;
+    }
+
+}
+
 
 void MainWindow::change_color_gray(bool color)
 {
